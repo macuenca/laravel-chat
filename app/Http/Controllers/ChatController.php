@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ChatMessage;
+use App\Events\ChatMessageSent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -47,8 +48,11 @@ class ChatController extends Controller
             'sender_id' => $user->id,
             'receiver_id' => 1,
             'conversation_id' => $request->conversation_id,
-            'message' => $request->message,
+            'message' => $user->name . ': ' . $request->message,
         ]);
+
+        // Trigger the event to be broadcast
+        broadcast(new ChatMessageSent($chatMessage))->toOthers();
 
         // Return the newly created object
         return $chatMessage->toJson();

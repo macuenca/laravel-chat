@@ -22,11 +22,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Make sure the logged-in user is a representative
+        // Make sure the user is logged-in
         $user = Auth::guard('api')->user();
-        if ($user->type != self::USER_TYPE_REPRESENTATIVE) {
-            return Response::json([], 403);
-        }
 
         return User::where('type', self::USER_TYPE_REPRESENTATIVE)
             ->take(self::DEFAULT_PAGE_SIZE)
