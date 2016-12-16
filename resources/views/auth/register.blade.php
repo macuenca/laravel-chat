@@ -60,6 +60,39 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('api_token') ? ' has-error' : '' }}">
+                            <label for="api_token" class="col-md-4 control-label">API Token</label>
+
+                            <div class="col-md-6">
+                                <input id="api_token" type="text" class="form-control" name="api_token" required>
+
+                                @if ($errors->has('api_token'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('api_token') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+                            <label for="type" class="col-md-4 control-label">User Type</label>
+
+                            <div class="col-md-6">
+                                <label class="radio-inline">
+                                    <input id="type" type="radio" name="type" value="representative" required>Representative
+                                </label>
+                                <label class="radio-inline">
+                                    <input id="type" type="radio" name="type" value="customer" required>Customer
+                                </label>
+
+                                @if ($errors->has('type'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('type') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">

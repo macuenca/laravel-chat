@@ -16,3 +16,12 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+/**
+ * All API endpoints are grouped under the 'api/v<version number>'
+ * prefix and protected by the token authentication driver.
+ */
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:api'], function () {
+    Route::resource('chats', 'ChatController');
+    Route::resource('users', 'UserController');
+});
