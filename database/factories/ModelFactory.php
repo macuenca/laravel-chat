@@ -21,3 +21,14 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\ChatMessage::class, function (Faker\Generator $faker, $params) {
+    return [
+        'conversation_id' => $params['conversation_id'],
+        'sender_id' => $params['sender_id'],
+        'receiver_id' => $params['receiver_id'],
+        'message' => $params['message'],
+        'sender_name' => $params['sender_name'],
+        'receiver_name' => $params['receiver_name'],
+    ];
+});
