@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\ChatMessage;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Broadcast;
 
@@ -19,9 +20,9 @@ class BroadcastServiceProvider extends ServiceProvider
         /*
          * Authenticate the user's personal channel...
          */
-        Broadcast::channel('conversation.*', function (/*$user, $conversationId*/) {
-            return true;
-            // return (int) $user->id === ChatMessage::find($conversationId);
+        Broadcast::channel('conversation.*', function ($user, $conversationId) {
+            return $user->id == ChatMessage::where('conversation_id', $conversationId)->first()->sender_id ||
+                   $user->id == ChatMessage::where('conversation_id', $conversationId)->first()->receiver_id;
         });
     }
 }
