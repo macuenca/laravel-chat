@@ -6,13 +6,12 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Start a conversation with a Representative</div>
+                    <div class="panel-heading">List of representatives</div>
                     <div class="panel-body">
                         <table class="table table-hover" id="representatives">
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Chat</th>
                             </tr>
                         </table>
                     </div>
@@ -25,9 +24,14 @@
 
 @section('footer')
     <script>
-        // Build the chat link for a new conversation
-        var getChatLinkHtml = function(conversationId, representativeId) {
-            return '<a href="/chat/' + conversationId + '/' +  representativeId + '"><span class="glyphicon glyphicon-comment"></span></a>';
+        var saveRep = function(id, elem) {
+            $.ajax({
+                method: 'PUT',
+                url: '/api/v1/users/' + id + '?api_token=' + window.Laravel.apiToken,
+                data: { name: elem.innerHTML }
+            }).done(function() {
+                console.log('Name changed');
+            });
         };
 
         $(function() {
@@ -38,11 +42,11 @@
                 data = $.parseJSON(data);
                 $.each(data, function(index, rep) {
                     var $tr = $('<tr>').append(
-                        $('<td>').text(rep.name),
-                        $('<td>').text(rep.email),
-                        $('<td>').html(getChatLinkHtml(conversationId, rep.id))
+                        $('<td contenteditable="true" onblur="saveRep(' + rep.id + ', this)">').text(rep.name),
+                        $('<td>').text(rep.email)
                     ).appendTo('#representatives');
                 });
+
             });
         });
     </script>

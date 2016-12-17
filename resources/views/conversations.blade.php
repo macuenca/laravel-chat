@@ -6,12 +6,15 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Messages in conversation ID {{ $conversationId }}</div>
+                    <div class="panel-heading">List of conversations</div>
                     <div class="panel-body">
                         <table class="table" id="conversations">
                             <tr>
-                                <th>Message</th>
+                                <th>Id</th>
+                                <th>Message count</th>
                                 <th>Date</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </table>
                     </div>
@@ -27,6 +30,11 @@
         // Build the chat link for a new conversation
         var getConversationLinkHtml = function(conversationId) {
             return '<a href="/conversation/' + conversationId + '">' + conversationId + '</a>';
+        };
+
+        // Build the link to join a conversation
+        var getJoinLinkHtml = function(conversationId) {
+            return '<a href="/chat/' + conversationId + '/{{ $representativeId }}"><span class="glyphicon glyphicon-comment"></span></a>';
         };
 
         // Build the link to delete a conversation
@@ -46,13 +54,16 @@
 
         $(function() {
             $.ajax({
-                url: '/api/v1/chats/' + {{ $conversationId }} + '?api_token=' + window.Laravel.apiToken
+                url: '/api/v1/chats?api_token=' + window.Laravel.apiToken
             }).done(function(data) {
                 data = $.parseJSON(data);
                 $.each(data, function(index, conv) {
                     var $tr = $('<tr>').append(
-                            $('<td>').text(conv.message),
-                            $('<td>').text(conv.created_at)
+                            $('<td>').html(getConversationLinkHtml(conv.conversation_id)),
+                            $('<td>').text(conv.messages),
+                            $('<td>').text(conv.date),
+                            $('<td>').html(getJoinLinkHtml(conv.conversation_id)),
+                            $('<td>').html(getDeleteLinkHtml(conv.conversation_id))
                     ).appendTo('#conversations');
                 });
 

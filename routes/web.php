@@ -20,4 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 Route::get('/listen', 'HomeController@listen');
 Route::get('/start-conversation', 'HomeController@start');
-Route::get('/conversation/{conversationId}/{representativeId}', 'HomeController@conversation');
+Route::get('/chat/{conversationId}/{representativeId}', 'HomeController@chat');
+Route::get('/conversations', 'HomeController@conversations');
+Route::get('/conversation/{conversationId}', 'HomeController@conversation');
+Route::get('/representatives', 'HomeController@representatives');
