@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\ChatMessageSent;
+use App\ChatMessage;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -49,7 +50,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Renders a customer-initiaded conversation view
+     * Renders a customer-initiated conversation view
      *
      * @param int $conversationId
      * @param int $representativeId
@@ -58,6 +59,10 @@ class HomeController extends Controller
     public function chat($conversationId, $representativeId)
     {
         $user = Auth::user();
+        $customerName = '';
+        $customerEmail = '';
+
+        // Initiate the conversation if the current user is a customer
         $chatMessage = $user->sentMessages()->create([
             'sender_id' => $user->id,
             'receiver_id' => $representativeId,
@@ -70,7 +75,22 @@ class HomeController extends Controller
         // Trigger the event to be broadcast
         broadcast(new ChatMessageSent($chatMessage))->toOthers();
 
-        return view('chat', ['conversationId' => $conversationId, 'receiverId' => $representativeId]);
+        // Show the customer's email to the representative
+        if ($user->type == UserController::USER_TYPE_REPRESENTATIVE) {
+            $message = ChatMessage::where('conversation_id', $conversationId)->first();
+            $customer = User::find($message->sender_id);
+            $customerName = $customer->name;
+            $customerEmail = $customer->email;
+        }
+
+        return view('chat',
+            [
+                'conversationId' => $conversationId,
+                'receiverId' => $representativeId,
+                'customerName' => $customerName,
+                'customerEmail' => $customerEmail,
+            ]
+        );
     }
 
     /**

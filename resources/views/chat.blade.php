@@ -5,25 +5,30 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Chat Window</div>
+                @if ($customerName != '')
+                    <div class="panel-heading">Chat Conversation with {{ $customerName }} ({{ $customerEmail }})</div>
+                @else
+                    <div class="panel-heading">Chat Conversation</div>
+                @endif
+
                 <div class="panel-body">
                     <form class="form-horizontal" role="form">
                         <div id="chatBox">
                             <ul>
                                 <li v-for="item in messages">
-                                    <strong>@{{ item.sender_name }}</strong>: @{{ item.message }}
+                                    [@{{ item.created_at }}]<strong>@{{ item.sender_name }}</strong>: @{{ item.message }}
                                 </li>
                             </ul>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-3">
-                                <textarea id="chatMessage" class="form-control" placeholder="Write message" cols="30" rows="4"></textarea>
+                            <div class="col-md-10 col-md-offset-1">
+                                <textarea id="chatMessage" class="form-control" placeholder="Write message" cols="80" rows="4"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-3">
+                            <div class="col-md-6 col-md-offset-1">
                                 <button id="sendButton" class="btn btn-primary">
                                     Send
                                 </button>
