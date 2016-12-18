@@ -4,7 +4,7 @@
 <div id="chatApp">
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-12 col-md-offset-0">
                 <div class="panel panel-default">
                     <div class="panel-heading">Messages in conversation ID {{ $conversationId }}</div>
                     <div class="panel-body">
@@ -51,7 +51,7 @@
                 data = $.parseJSON(data);
                 $.each(data, function(index, conv) {
                     var $tr = $('<tr>').append(
-                            $('<td>').text(conv.message),
+                            $('<td>').html('<i>' + conv.sender_name + ':</i> ' + conv.message),
                             $('<td>').text(conv.created_at)
                     ).appendTo('#conversations');
                 });
