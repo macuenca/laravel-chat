@@ -42,7 +42,7 @@ class UserController extends Controller
     {
         // Make sure the logged-in user is a representative
         $user = Auth::guard('api')->user();
-        if ($user->type != self::USER_TYPE_REPRESENTATIVE || $user->id != $id) {
+        if ($user->type != self::USER_TYPE_REPRESENTATIVE) {
             return Response::json([], 403);
         }
 
