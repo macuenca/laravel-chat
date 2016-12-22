@@ -46,6 +46,7 @@ class UserController extends Controller
             return Response::json([], 403);
         }
 
+        $user = User::find($id);
         $user->name = $request->name;
         $user->save();
 
